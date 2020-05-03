@@ -4,5 +4,6 @@ packer_cache/
 # Crash log
 crash.log
 
-# For built boxes
+# For built boxes or VM
 *.box
+output-virtualbox-iso/
