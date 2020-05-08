@@ -2,7 +2,7 @@
   "description": "Generate a vagrant box (for a VirtualBox provider) from a windows 10 iso. Use except vagrant option to get the original OVF VM",
   "min_packer_version": "1.5.5",
   "variables": {
-    "iso_path": "../01. OS/Windows10_fr_64bits.iso"
+    "iso_path": "../../01. OS/Windows10_fr_64bits.iso"
   },
   "builders": [
     {
@@ -68,7 +68,7 @@
     {
       "type": "vagrant",
       "keep_input_artifact": false,
-      "output": "./build/{{.Provider}}_windows-10.box",
+      "output": "../build/{{.Provider}}_windows-10.box",
       "vagrantfile_template": "./templates/vagrantfile.template"
     }
   ]
