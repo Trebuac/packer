@@ -17,7 +17,7 @@ Premiers pas inspirés par la documentation et les exemples suivant :
 _But_ : 
 - Créer une VM VirtualBox et/ou une box Vagrant à partir de l'iso windows 10 du site Microsoft 
 - Passser automatiquement les configurations (création d'un utilisateur, configuration des disques, langues, ...)
-- Activer WinRM (pour une utilisation future d'Ansible pour du provisionning plus poussé)
+- Activer WinRM (pour que Packer commence par provisionner la machine/lancer des commandes à distance puis pour une utilisation future d'Ansible pour du provisionning plus poussé)
 
 _Pré-requis_:
 - L'iso de [windows 10](https://www.microsoft.com/fr-fr/software-download/windows10) - testé avec un W10 Pro - version 1909 (Mars 2020)
@@ -40,10 +40,9 @@ Quelques explications sur le déroulement (visualisable dans la console lors du 
 3. Suite au premier redémarrage, Windows exécute la partie "oobeSystem" du fichier Autounattend.xml avec la connexion automatique (AutoLogon obligatoire) puis le lancement des scripts _FirstLogonCommands_
 4. Ces scripts permettent d'activer winRM
 5. Suite à cela, Packer qui était en attente active sur la connexion WinRM reprend la main.
-6. Packer charge via winRM l'iso des outils VBox additionnels (Très long voir [ce soucis](https://github.com/hashicorp/packer/issues/2648))
-7. Packer lance les différents _provisionners_ déclarés (le script exécutant l'installation des outils Vbox pour l'instant)
-8. Packer ferme proprement la VM (toujours sous le format OVF)
-9. Packer exécute les post-processors notamment celui de Vagrant qui transforme la VM OVF en box Vagrant (possibilité de garder la VM d'origine avec keep_input_artifact = true)
+6. Packer lance les différents _provisionners_ déclarés (le script exécutant l'installation des outils Vbox pour l'instant qui est attaché sur le lecteur F - l'upload wia winRM est problématique à cause de [ce soucis](https://github.com/hashicorp/packer/issues/2648))
+7. Packer ferme proprement la VM (toujours sous le format OVF)
+8. Packer exécute les post-processors notamment celui de Vagrant qui transforme la VM OVF en box Vagrant (possibilité de garder la VM d'origine avec keep_input_artifact = true)
 
 Quelques ressources intéressantes qui m'ont servis :
 [vboxmanage-modifyvm](https://www.virtualbox.org/manual/ch08.html#vboxmanage-modifyvm),

@@ -1,5 +1,5 @@
 {
-  "description": "Generate a windows VirtualBox VM (OVF format) from a windows 10 iso",
+  "description": "Generate a vagrant box (for a VirtualBox provider) from a windows 10 iso. Use except vagrant option to get the original OVF VM",
   "min_packer_version": "1.5.5",
   "variables": {
     "iso_path": "../01. OS/Windows10_fr_64bits.iso"
@@ -9,23 +9,23 @@
       "type": "virtualbox-iso",
       "guest_os_type": "Windows10_64",
       "usb": true,
-      "sound":"dsound",
+      "sound": "dsound",
       "memory": "2048",
       "headless": false,
       "iso_url": "{{user `iso_path`}}",
       "iso_checksum_type": "none",
       "floppy_files": [
-        "./scripts/Autounattend.xml",
+        "./conf/Autounattend.xml",
         "./scripts/networkLocation.ps1",
         "./scripts/enable-winrm.ps1"
       ],
-      "guest_additions_mode": "upload",
+      "guest_additions_mode": "attach",
       "communicator": "winrm",
       "winrm_username": "packer",
       "winrm_password": "packer",
       "disk_size": 102400,
       "hard_drive_interface": "sata",
-      "iso_interface":"sata",
+      "iso_interface": "sata",
       "sata_port_count": 2,
       "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
       "vboxmanage": [
@@ -64,7 +64,6 @@
       ]
     }
   ],
-
   "post-processors": [
     {
       "type": "vagrant",
@@ -73,5 +72,4 @@
       "vagrantfile_template": "./templates/vagrantfile.template"
     }
   ]
-
 }
