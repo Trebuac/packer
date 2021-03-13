@@ -6,7 +6,8 @@ Vagrant.configure("2") do |config|
     config.vm.box = "ubuntu_server_20.04"
     config.vm.communicator = "ssh"
 
-    config.vm.guest = :linux
+    config.ssh.username = "remote_admin"
+    config.ssh.password = "remote_admin"
 
     config.vm.provider "virtualbox" do |v|
         v.gui = false

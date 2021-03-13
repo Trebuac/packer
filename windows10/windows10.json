@@ -1,75 +1,69 @@
 {
-  "description": "Generate a vagrant box (for a VirtualBox provider) from a windows 10 iso. Use except vagrant option to get the original OVF VM",
-  "min_packer_version": "1.5.5",
-  "variables": {
-    "iso_path": "../../01. OS/Windows10_fr_64bits.iso"
-  },
-  "builders": [
-    {
-      "type": "virtualbox-iso",
-      "guest_os_type": "Windows10_64",
-      "usb": true,
-      "sound": "dsound",
-      "memory": "2048",
-      "headless": false,
-      "iso_url": "{{user `iso_path`}}",
-      "iso_checksum_type": "none",
-      "floppy_files": [
-        "./conf/Autounattend.xml",
-        "./scripts/networkLocation.ps1",
-        "./scripts/enable-winrm.ps1"
-      ],
-      "guest_additions_mode": "attach",
-      "communicator": "winrm",
-      "winrm_username": "packer",
-      "winrm_password": "packer",
-      "disk_size": 102400,
-      "hard_drive_interface": "sata",
-      "iso_interface": "sata",
-      "sata_port_count": 2,
-      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
-      "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--vram",
-          "128"
+    "description": "Generate a vagrant box (for a VirtualBox provider) from a windows 10 iso. Use except vagrant option to get the original OVF VM",
+    "min_packer_version": "1.5.5",
+    "variables": {
+        "iso_path": "../../01. OS/Windows10_fr_64bits.iso"
+    },
+    "builders": [{
+        "type": "virtualbox-iso",
+        "guest_os_type": "Windows10_64",
+        "usb": true,
+        "sound": "dsound",
+        "memory": "2048",
+        "headless": false,
+        "iso_url": "{{user `iso_path`}}",
+        "iso_checksum_type": "none",
+        "floppy_files": [
+            "./conf/Autounattend.xml",
+            "./scripts/networkLocation.ps1",
+            "./scripts/enable-winrm.ps1"
         ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--clipboard",
-          "bidirectional"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--draganddrop",
-          "bidirectional"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--audiocontroller",
-          "hda"
+        "guest_additions_mode": "attach",
+        "communicator": "winrm",
+        "winrm_username": "remote_admin",
+        "winrm_password": "remote_admin",
+        "disk_size": 102400,
+        "hard_drive_interface": "sata",
+        "iso_interface": "sata",
+        "sata_port_count": 2,
+        "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+        "vboxmanage": [
+            [
+                "modifyvm",
+                "{{.Name}}",
+                "--vram",
+                "128"
+            ],
+            [
+                "modifyvm",
+                "{{.Name}}",
+                "--clipboard",
+                "bidirectional"
+            ],
+            [
+                "modifyvm",
+                "{{.Name}}",
+                "--draganddrop",
+                "bidirectional"
+            ],
+            [
+                "modifyvm",
+                "{{.Name}}",
+                "--audiocontroller",
+                "hda"
+            ]
         ]
-      ]
-    }
-  ],
-  "provisioners": [
-    {
-      "type": "powershell",
-      "scripts": [
-        "./scripts/installGuestTools.ps1"
-      ]
-    }
-  ],
-  "post-processors": [
-    {
-      "type": "vagrant",
-      "keep_input_artifact": false,
-      "output": "../build/{{.Provider}}_windows-10.box",
-      "vagrantfile_template": "./templates/vagrantfile.template"
-    }
-  ]
+    }],
+    "provisioners": [{
+        "type": "powershell",
+        "scripts": [
+            "./scripts/installGuestTools.ps1"
+        ]
+    }],
+    "post-processors": [{
+        "type": "vagrant",
+        "keep_input_artifact": false,
+        "output": "../build/{{.Provider}}_windows-10.box",
+        "vagrantfile_template": "./templates/vagrantfile.template"
+    }]
 }

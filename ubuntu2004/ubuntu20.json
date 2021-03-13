@@ -32,50 +32,28 @@
         "<enter>"
       ],
       "communicator": "ssh",
-      "ssh_username": "packer",
-      "ssh_password": "packer",
+      "ssh_username": "remote_admin",
+      "ssh_password": "remote_admin",
       "ssh_timeout": "10m",
       "disk_size": 50000,
       "hard_drive_interface": "sata",
       "iso_interface": "sata",
       "sata_port_count": 2,
-      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+      "shutdown_command": "echo 'remote_admin' | sudo -S shutdown -P now",
       "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--vram",
-          "128"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--clipboard",
-          "bidirectional"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--draganddrop",
-          "bidirectional"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--audiocontroller",
-          "hda"
-        ]
+        ["modifyvm", "{{.Name}}", "--vram", "128"],
+        ["modifyvm", "{{.Name}}", "--clipboard", "bidirectional"],
+        ["modifyvm", "{{.Name}}", "--draganddrop", "bidirectional"],
+        ["modifyvm", "{{.Name}}", "--audiocontroller", "hda"]
       ]
     }
   ],
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "echo 'packer' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "execute_command": "echo 'remote_admin' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "expect_disconnect": true,
-      "scripts": [
-        "./scripts/install.sh"
-      ]
+      "scripts": ["./scripts/install.sh"]
     }
   ],
   "post-processors": [

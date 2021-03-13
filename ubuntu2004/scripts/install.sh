@@ -6,12 +6,21 @@ apt-get -y update;
 # Upgrade all installed packages incl. kernel and kernel headers
 apt-get -y dist-upgrade -o Dpkg::Options::="--force-confnew";
 
+
+##################################
+### Conf sudo                  ###
+##################################
+
+# Add remote_admin user to sudoers.
+echo "remote_admin        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
+sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
+
 ##################################
 ### Install VBoxGuestAdditions ###
 ##################################
 
 # set a default HOME_DIR environment variable if not set
-HOME_DIR="/home/packer";
+HOME_DIR="/home/remote_admin";
 
 VER="`cat $HOME_DIR/.vbox_version`";
 ISO="VBoxGuestAdditions_$VER.iso";
@@ -25,5 +34,6 @@ umount /tmp/vbox;
 # Delete tmp files and iso
 rm -rf /tmp/vbox;
 rm -f $HOME_DIR/*.iso;
+
 
 ## To be cleaned and completed... (maybe ansible ?)

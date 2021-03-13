@@ -6,6 +6,9 @@ Vagrant.configure("2") do |config|
     config.vm.box = "windows_10"
     config.vm.communicator = "winrm"
 
+    config.winrm.username = "remote_admin"
+    config.winrm.password = "remote_admin"
+
     config.vm.guest = :windows
 
     config.vm.provider "virtualbox" do |v|
